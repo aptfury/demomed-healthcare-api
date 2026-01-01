@@ -1,6 +1,16 @@
 import { BloodPressure, Patient, RiskScore, RiskReport } from "@/app/_lib/interfaces/patients";
 
 export class PatientUtils {
+    parseAge(raw_age: any): number | null {
+        if (!raw_age) return null;
+
+        const age: number = parseInt(raw_age);
+
+        if (Number.isNaN(age)) return null;
+
+        return age;
+    }
+
     parseBloodPressure(blood_pressure: any): BloodPressure | null {
         if (!blood_pressure) return null;
         if (typeof blood_pressure == "object") return blood_pressure;
