@@ -5,14 +5,14 @@ enum RetryStatus {
 }
 
 export class RetryUtils {
-    public valid_retry_status: typeof RetryStatus = RetryStatus;
-    public max_attempts: number = 5;
-    public delay_by: number = 1000;
-    public retry_after: number | null = null;
+    public validStatus: typeof RetryStatus = RetryStatus;
+    public maxTries: number = 5;
+    public delayBy: number = 1000;
+    public retryAfter: number | null = null;
 
-    constructor(max_attempts?: number) {
-        if (max_attempts) {
-            this.max_attempts = max_attempts;
+    constructor(attempts?: number) {
+        if (attempts) {
+            this.maxTries = attempts;
         }
     }
 
@@ -22,35 +22,38 @@ export class RetryUtils {
 
     public async dynamicFetch(api_url: string, api_headers: Headers): Promise<any> {
         try {
-            for (let i = 0; i < this.max_attempts; i++) {
+            for (let i = 0; i < this.maxTries; i++) {
                 const res: Response = await fetch(api_url, { method: 'GET', headers: api_headers });
 
-                if (!this.valid_retry_status[res.status]) {
+                if (!this.validStatus[res.status]) {
+                    // return data if request is successful
                     if (res.ok) {
                         return await res.json();
                     }
 
-                    console.warn(`Response returned with a status that hasn't been accounted for. (Status: ${res.status})`);
+                    // return status code if not ok, 429, 500, or 503
+                    console.warn(`Status: ${res.status}`);
                 }
 
-                this.delay_by = 1000 * Math.pow(2, i);
+                // internal server error or server unavailable
+                this.delayBy = 1000 * Math.pow(2, i); // calculate delay time
 
-                if (this.valid_retry_status[res.status] == 'rate_limit') {
-                    this.retry_after = Number(res.headers.get("retry-after"));
+                // rate limit
+                if (this.validStatus[res.status] == 'rate_limit') {
+                    this.retryAfter = Number(res.headers.get("retry-after"));
 
-                    if (this.retry_after) {
-                        this.delay_by = this.retry_after * 1000;
+                    if (this.retryAfter) {
+                        this.delayBy = this.retryAfter * 1000; // calculate delay time based on retryAfter
                     }
                 }
 
-                console.warn(`${this.valid_retry_status[res.status]} on ${api_url}. Retrying in ${this.delay_by}ms. Attempt: ${i}`);
+                console.warn(`${this.validStatus[res.status]}: Retry in ${this.delayBy}ms. Attempt ${i}`);
 
-                await this.retryDelay(this.delay_by);
+                await this.retryDelay(this.delayBy);
             }
         }
         catch (err: any) {
             console.log(err.message);
-            return err;
         }
     }
 }

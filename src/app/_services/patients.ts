@@ -13,7 +13,7 @@ export class PatientService {
     private static utils: PatientUtils = new PatientUtils();
     private static fetch_utils: RetryUtils = new RetryUtils(5);
     private static endpoint: string = `${BASE_URL}/patients`;
-    private static submitAssignment: string = `${BASE_URL}/submit-assessment`;
+    private static assessmentEndpoint: string = `${BASE_URL}/submit-assessment`;
     private static headers: Headers = new Headers({
         "Content-Type": "application/json",
         "x-api-key": API_KEY
@@ -47,11 +47,6 @@ export class PatientService {
                 // adds patients from this request to the array of patients
                 this.patients.push(...res.data);
 
-                /**
-                 * FIXME: Missing DEMO011 - Appears to not populate even without data validation and manipulation
-                 * TODO: Account for missing DEMO011?
-                 */
-
                 // checks if this is the last page to request data for
                 if (this.page < res.pagination.totalPages || res.pagination.haxNext) {
                     this.hasNext = true;
@@ -74,6 +69,9 @@ export class PatientService {
     }
 
     static async getPatientAlerts(): Promise<RiskReport> {
+        /**
+         * FIXME: loading issues resulting in rare incomplete responses
+         */
         try {
             // reset report
             this.riskReport = {
@@ -105,22 +103,24 @@ export class PatientService {
                 this.riskReport.fever_patients.push(...report.fever_patients);
                 this.riskReport.data_quality_issues.push(...report.data_quality_issues);
             });
-
-            // return report
-            return this.riskReport;
         }
         catch (err: any) {
             console.log(err.message);
             return err;
         }
+
+        // return report
+        return this.riskReport;
     }
 
     static async submitRiskReport(): Promise<any> {
         try {
+            // generate patient risk report
             const riskReport: RiskReport = await this.getPatientAlerts();
 
+            // send risk report to /submit-assessment endpoint
             const res: Response = await fetch(
-                `${this.submitAssignment}`,
+                `${this.assessmentEndpoint}`,
                 {
                     method: "POST",
                     headers: this.headers,

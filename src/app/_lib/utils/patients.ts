@@ -64,7 +64,6 @@ export class PatientUtils {
         }
 
         // Stage 1
-        // TODO: Double check that I don't need (80 <= bp[1] && bp[1] < 90) for safety
         if (bp[0] < 140 || bp[1] < 90) {
             score.points = 2;
         }
@@ -151,14 +150,17 @@ export class PatientUtils {
         }
         const totalScore: number = age.points + bp.points + temp.points;
 
+        // high risk patients
         if (totalScore >= 4) {
             report.high_risk_patients.push(patient_id);
         }
 
+        // fever patients
         if (temp.points > 0) {
             report.fever_patients.push(patient_id);
         }
 
+        // missing or invalid data
         if (age.invalid || bp.invalid || temp.invalid) {
             report.data_quality_issues.push(patient_id);
         }

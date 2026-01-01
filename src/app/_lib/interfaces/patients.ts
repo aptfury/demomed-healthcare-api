@@ -3,17 +3,17 @@ export type BloodPressure = [number, number]; // [systolic, diastolic]
 export interface Patient {
     patient_id: string,
     name: string | null,
-    age?: number | null,
+    age: number | null,
     age_risk: RiskScore,
-    gender?: string | null,
+    gender: string | null,
     blood_pressure: BloodPressure | null, // [systolic, diastolic]
     blood_pressure_risk: RiskScore,
-    temperature?: number | null,
+    temperature: number | null,
     temperature_risk: RiskScore,
-    visit_date?: string | null,
-    diagnosis?: string | null,
-    medications?: string | null,
-    risk_report?: RiskReport,
+    visit_date: string | null,
+    diagnosis: string | null,
+    medications: string | null,
+    risk_report: RiskReport,
 }
 
 export interface RiskScore {
