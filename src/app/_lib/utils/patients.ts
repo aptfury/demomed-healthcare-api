@@ -23,4 +23,14 @@ export class PatientUtils {
 
         return bp;
     }
+
+    parseTemperature(raw_temp: any): number | null {
+        if (!raw_temp) return null;
+
+        const temp: number = parseInt(raw_temp);
+
+        if (Number.isNaN(temp)) return null;
+
+        return temp;
+    }
 }
