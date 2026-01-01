@@ -2,6 +2,7 @@
 import "dotenv/config";
 import { BloodPressure, Patient, RiskScore, RiskReport } from "@/app/_lib/interfaces/patients";
 import { PatientUtils } from "@/app/_lib/utils/patients";
+import { RetryUtils } from "@/app/_lib/utils/retry";
 
 // get environment variables
 const BASE_URL: string = `${process.env.BASE_URL}`;
@@ -10,6 +11,7 @@ const API_KEY: string = `${process.env.API_KEY}`;
 // patient services
 export class PatientService {
     private static utils: PatientUtils = new PatientUtils();
+    private static fetch_utils: RetryUtils = new RetryUtils(5);
     private static endpoint: string = `${BASE_URL}/patients`;
     private static headers: Headers = new Headers({
         "Content-Type": "application/json",
@@ -36,11 +38,13 @@ export class PatientService {
                 this.query.set("page", String(this.page)); // page number for query params
 
                 // http request
-                const res: Response = await fetch(`${this.endpoint}?${this.query}`, { headers: this.headers });
-                const data: any = await res.json();
+                const res: any = await this.fetch_utils.dynamicFetch(
+                    `${this.endpoint}?${this.query}`,
+                    this.headers
+                );
 
                 // adds patients from this request to the array of patients
-                this.patients.push(...data.data);
+                this.patients.push(...res.data);
 
                 /**
                  * FIXME: Missing DEMO011 - Appears to not populate even without data validation and manipulation
@@ -48,7 +52,7 @@ export class PatientService {
                  */
 
                 // checks if this is the last page to request data for
-                if (this.page < data.pagination.totalPages || data.pagination.haxNext) {
+                if (this.page < res.pagination.totalPages || res.pagination.haxNext) {
                     this.hasNext = true;
                     this.page++;
                 }
@@ -106,6 +110,24 @@ export class PatientService {
         }
         catch (err: any) {
             console.log(err.message);
+            return err;
+        }
+    }
+
+    static async testSubmitRiskReport(): Promise<any> {
+        try {
+            const local_url: string = 'http://localhost:3000/test_submit_assessment';
+            const riskReport: RiskReport = await this.getPatientAlerts();
+
+            const res: Response = await fetch(local_url, { method: 'POST', headers: this.headers });
+            if (res.ok) {
+                return "Submission successful";
+            }
+
+            return await res.json();
+        }
+        catch (err: any) {
+            console.log(err.messsage);
             return err;
         }
     }
