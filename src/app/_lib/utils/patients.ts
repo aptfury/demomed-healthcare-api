@@ -74,7 +74,6 @@ export class PatientUtils {
             score.points = 3;
         }
 
-        score.invalid = true; // catch all for exceptions that sneak through
         return score;
     }
 

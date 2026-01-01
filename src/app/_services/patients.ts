@@ -55,6 +55,8 @@ export class PatientService {
                     this.patients[i].age_risk = this.utils.ageRisk(patient.age);
                     // temperatureRisk()
                     this.patients[i].temperature_risk = this.utils.temperatureRisk(patient.temperature);
+                    // generateRiskReport()
+                    this.patients[i].risk_report = this.utils.generateRiskReport(patient.patient_id, patient.age_risk, patient.blood_pressure_risk, patient.temperature_risk);
                 });
                 /**
                  * END - Remove after util testing
