@@ -59,6 +59,14 @@ export class PatientService {
                 // Expected: 3 points for DEMO028 (142; 88) - Success
                 this.patients.forEach((patient: Patient, i: number): any =>
                     this.patients[i].blood_pressure_risk = this.utils.bloodPressureRisk(patient.blood_pressure));
+
+                // test ageRisk()
+                // Expected: 0 points for DEMO003 (34) - Success
+                // Expected: 0 points for DEMO043 (null) - Success
+                // Expected: 1 points for DEMO001 (45) - Success
+                // Expected: 2 points for DEMO002 (67) - Success
+                this.patients.forEach((patient: Patient, i: number): any =>
+                    this.patients[i].age_risk = this.utils.ageRisk(patient.age));
                 /**
                  * END - Remove after util testing
                  */

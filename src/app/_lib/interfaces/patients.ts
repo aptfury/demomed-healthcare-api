@@ -4,6 +4,7 @@ export interface Patient {
     patient_id: string,
     name: string | null,
     age?: number | null,
+    age_risk?: RiskScore,
     gender?: string | null,
     blood_pressure?: BloodPressure | null, // [systolic, diastolic]
     blood_pressure_risk?: RiskScore,

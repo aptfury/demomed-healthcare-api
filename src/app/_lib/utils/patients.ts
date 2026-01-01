@@ -77,5 +77,38 @@ export class PatientUtils {
         return score;
     }
 
+    ageRisk(age: any): RiskScore {
+        const score: RiskScore = {
+            points: 0,
+            invalid: false
+        }
+
+        // Data Missing or Invalid
+        if (!age) {
+            score.invalid = true;
+            return score;
+        }
+
+        // Normal
+        if (age < 40) {
+            return score;
+        }
+
+        // Elevated
+        if (age <= 65) {
+            score.points = 1;
+            return score;
+        }
+
+        // High
+        if (age > 65) {
+            score.points = 2;
+            return score;
+        }
+
+        score.invalid = true;
+        return score;
+    }
+
     // RISK REPORTING
 }
