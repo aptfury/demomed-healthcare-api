@@ -1,11 +1,11 @@
-export type BloodPressure = [number, number] | string; // [systolic, diastolic]
+export type BloodPressure = [number, number]; // [systolic, diastolic]
 
 export interface Patient {
     patient_id: string,
     name: string | null,
     age?: number | null,
     gender?: string | null,
-    blood_pressure?: BloodPressure | null, // [systolic, diastolic]
+    blood_pressure?: BloodPressure | string | null, // [systolic, diastolic]
     temperature?: number | null,
     visit_date?: string | null,
     diagnosis?: string | null,
