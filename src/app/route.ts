@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { NextResponse } from "next/server";
 import { PatientService } from "@/app/_services/patients";
+import { Patient } from "@/app/_lib/interfaces/patients";
 
 // Endpoint Config
 const base_url: string = `${process.env.BASE_URL}/patients`;
@@ -16,6 +17,6 @@ const headers: Headers = new Headers({
 // }
 
 export async function GET(): Promise<NextResponse> {
-  const patients: any[] = await PatientService.aggregatePatients();
+  const patients: Patient[] = await PatientService.aggregatePatients();
   return NextResponse.json({ populated: patients });
 }

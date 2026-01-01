@@ -1,5 +1,6 @@
 // imports
 import "dotenv/config";
+import { Patient } from "@/app/_lib/interfaces/patients";
 
 // get environment variables
 const BASE_URL: string = `${process.env.BASE_URL}`;
@@ -18,7 +19,7 @@ export class PatientService {
     })
     private static page: number = 1;
     private static hasNext: boolean = false;
-    private static patients: any[] = [];
+    private static patients: Patient[] = [];
 
     static async aggregatePatients(): Promise<any[]> {
         try {
