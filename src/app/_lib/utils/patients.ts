@@ -1,6 +1,7 @@
 import { BloodPressure, Patient, RiskScore, RiskReport } from "@/app/_lib/interfaces/patients";
 
 export class PatientUtils {
+    // DATA PARSING
     parseAge(raw_age: any): number | null {
         if (!raw_age) return null;
 
@@ -33,4 +34,48 @@ export class PatientUtils {
 
         return temp;
     }
+
+    // RISK ASSESSMENT
+    bloodPressureRisk(bp: BloodPressure | null): RiskScore {
+        /**
+         * bp[0]: systolic
+         * bp[1]: diastolic
+         */
+        const score: RiskScore = {
+            points: 0,
+            invalid: false
+        }
+
+        // Data Missing or Invalid
+        if (!bp) {
+            score.invalid = true;
+            return score;
+        }
+
+        // Normal
+        if (bp[0] < 120 && bp[1] < 80) {
+            return score;
+        }
+
+        // Elevated
+        if (bp[0] < 130 && bp[1] < 80) {
+            score.points = 1;
+            return score;
+        }
+
+        // Stage 1
+        // TODO: Double check that I don't need (80 <= bp[1] && bp[1] < 90) for safety
+        if (bp[0] < 140 || bp[1] < 90) {
+            score.points = 2;
+        }
+
+        // Stage 2
+        if (bp[0] >= 140 || bp[1] >= 90) {
+            score.points = 3;
+        }
+
+        return score;
+    }
+
+    // RISK REPORTING
 }
