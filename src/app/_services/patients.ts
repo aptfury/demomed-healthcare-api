@@ -36,9 +36,19 @@ export class PatientService {
                 /**
                  * START - Remove after util testing
                  */
+                // test parseAge()
+                // Expected: null for DEMO043 ("fifty-three")
+                this.patients.forEach((patient: Patient, i: number): any =>
+                    this.patients[i].age = this.utils.parseAge(patient.age));
+
                 // test parseBloodPressure()
                 this.patients.forEach((patient: Patient, i: number): any =>
                     this.patients[i].blood_pressure = this.utils.parseBloodPressure(patient.blood_pressure));
+
+                // test parseTemperature()
+                // Expected: null for DEMO007 (TEMP_ERROR)
+                this.patients.forEach((patient: Patient, i: number): any =>
+                    this.patients[i].temperature = this.utils.parseTemperature(patient.temperature));
                 /**
                  * END - Remove after util testing
                  */
