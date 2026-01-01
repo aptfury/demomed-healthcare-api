@@ -17,6 +17,6 @@ const headers: Headers = new Headers({
 // }
 
 export async function GET(): Promise<NextResponse> {
-  const patients: Patient[] = await PatientService.aggregatePatients();
+  const patients: Patient[] = await PatientService.getPatientAlerts();
   return NextResponse.json({ populated: patients });
 }
