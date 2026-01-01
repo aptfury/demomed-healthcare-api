@@ -35,7 +35,8 @@ export class PatientService {
 
                 /**
                  * START - Remove after util testing
-                 * FIXME: Missing DEMO011 - remove tests once utilities are made to see if it populates
+                 * FIXME: Missing DEMO011 - Appears to not populate even without data validation and manipulation
+                 * TODO: Account for missing DEMO011?
                  */
                 // test parseAge()
                 // Expected: null for DEMO043 ("fifty-three") - Success
