@@ -36,6 +36,11 @@ export class PatientService {
                 /**
                  * START - Remove after util testing
                  */
+                // test parseAge()
+                // Expected: null for William StringAge ("fifty-three")
+                this.patients.forEach((patient: Patient, i: number): any =>
+                    this.patients[i].age = this.utils.parseAge(patient.age));
+
                 // test parseBloodPressure()
                 this.patients.forEach((patient: Patient, i: number): any =>
                     this.patients[i].blood_pressure = this.utils.parseBloodPressure(patient.blood_pressure));
