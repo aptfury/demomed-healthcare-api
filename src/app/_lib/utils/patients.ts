@@ -28,7 +28,7 @@ export class PatientUtils {
     parseTemperature(raw_temp: any): number | null {
         if (!raw_temp) return null;
 
-        const temp: number = parseInt(raw_temp);
+        const temp: number = parseFloat(raw_temp);
 
         if (Number.isNaN(temp)) return null;
 
@@ -74,6 +74,7 @@ export class PatientUtils {
             score.points = 3;
         }
 
+        score.invalid = true; // catch all for exceptions that sneak through
         return score;
     }
 
@@ -106,7 +107,39 @@ export class PatientUtils {
             return score;
         }
 
-        score.invalid = true;
+        score.invalid = true; // catch all for exceptions that sneak through
+        return score;
+    }
+
+    temperatureRisk(temp: any): RiskScore {
+        const score: RiskScore = {
+            points: 0,
+            invalid: false
+        }
+
+        if (!temp) {
+            score.invalid = true;
+            return score;
+        }
+
+        // Normal
+        if (temp <= 99.5) {
+            return score;
+        }
+
+        // Low
+        if (temp <= 100.9) {
+            score.points = 1;
+            return score;
+        }
+
+        // High
+        if (temp >= 101.0) {
+            score.points = 2;
+            return score;
+        }
+
+        score.invalid = true; // catch all for exceptions that sneak through
         return score;
     }
 
