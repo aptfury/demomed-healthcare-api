@@ -69,10 +69,12 @@ export class PatientService {
                     this.patients[i].age_risk = this.utils.ageRisk(patient.age));
 
                 // test temperatureRisk()
-                // Expected: invalid for DEMO007 (null)
-                // Expected: 0 points for DEMO001 (98)
-                // Expected: 1 points for DEMO009 (100)
-                // Expected: 2 points for DEMO012 (102)
+                // Expected: invalid for DEMO007 (null) - Success
+                // Expected: 0 points for DEMO001 (98.6) - Success
+                // Expected: 1 points for DEMO009 (100.1) - Success
+                // Expected: 2 points for DEMO012 (103.2) - Success
+                this.patients.forEach((patient: Patient, i: number): any =>
+                    this.patients[i].temperature_risk = this.utils.temperatureRisk(patient.temperature));
                 /**
                  * END - Remove after util testing
                  */

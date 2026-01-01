@@ -9,6 +9,7 @@ export interface Patient {
     blood_pressure?: BloodPressure | null, // [systolic, diastolic]
     blood_pressure_risk?: RiskScore,
     temperature?: number | null,
+    temperature_risk?: RiskScore,
     visit_date?: string | null,
     diagnosis?: string | null,
     medications?: string | null
