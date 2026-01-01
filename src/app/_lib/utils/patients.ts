@@ -144,4 +144,26 @@ export class PatientUtils {
     }
 
     // RISK REPORTING
+    generateRiskReport(patient_id: string, age: RiskScore, bp: RiskScore, temp: RiskScore): RiskReport {
+        const report: RiskReport = {
+            high_risk_patients: [],
+            fever_patients: [],
+            data_quality_issues: []
+        }
+        const totalScore: number = age.points + bp.points + temp.points;
+
+        if (totalScore >= 4) {
+            report.high_risk_patients.push(patient_id);
+        }
+
+        if (temp.points > 0) {
+            report.fever_patients.push(patient_id);
+        }
+
+        if (age.invalid || bp.invalid || temp.invalid) {
+            report.data_quality_issues.push(patient_id);
+        }
+
+        return report;
+    }
 }

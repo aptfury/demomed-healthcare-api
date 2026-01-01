@@ -28,9 +28,13 @@ export class PatientService {
             this.patients = [];
             this.page = 1;
             while (true) {
-                this.query.set("page", String(this.page));
+                this.query.set("page", String(this.page)); // page number for query params
+
+                // http request
                 const res: Response = await fetch(`${this.endpoint}?${this.query}`, { headers: this.headers });
                 const data: any = await res.json();
+
+                // adds patients from this request to the array of patients
                 this.patients.push(...data.data);
 
                 /**
@@ -56,6 +60,7 @@ export class PatientService {
                  * END - Remove after util testing
                  */
 
+                // checks if this is the last page to request data for
                 if (this.page < data.pagination.totalPages || data.pagination.haxNext) {
                     this.hasNext = true;
                     this.page++;
@@ -64,6 +69,7 @@ export class PatientService {
                     this.hasNext = false;
                 }
 
+                // loop ends if last page was received
                 if (!this.hasNext) break;
             }
         }
