@@ -13,6 +13,7 @@ export class PatientService {
     private static utils: PatientUtils = new PatientUtils();
     private static fetch_utils: RetryUtils = new RetryUtils(5);
     private static endpoint: string = `${BASE_URL}/patients`;
+    private static submitAssignment: string = `${BASE_URL}/submit-assessment`;
     private static headers: Headers = new Headers({
         "Content-Type": "application/json",
         "x-api-key": API_KEY
@@ -114,15 +115,18 @@ export class PatientService {
         }
     }
 
-    static async testSubmitRiskReport(): Promise<any> {
+    static async submitRiskReport(): Promise<any> {
         try {
-            const local_url: string = 'http://localhost:3000/test_submit_assessment';
             const riskReport: RiskReport = await this.getPatientAlerts();
 
-            const res: Response = await fetch(local_url, { method: 'POST', headers: this.headers });
-            if (res.ok) {
-                return "Submission successful";
-            }
+            const res: Response = await fetch(
+                `${this.submitAssignment}`,
+                {
+                    method: "POST",
+                    headers: this.headers,
+                    body: JSON.stringify(riskReport)
+                }
+            );
 
             return await res.json();
         }
