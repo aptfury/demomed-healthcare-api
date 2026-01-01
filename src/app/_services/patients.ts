@@ -38,44 +38,20 @@ export class PatientService {
                  * FIXME: Missing DEMO011 - Appears to not populate even without data validation and manipulation
                  * TODO: Account for missing DEMO011?
                  */
-                // test parseAge()
-                // Expected: null for DEMO043 ("fifty-three") - Success
-                this.patients.forEach((patient: Patient, i: number): any =>
-                    this.patients[i].age = this.utils.parseAge(patient.age));
-
-                // test parseBloodPressure()
-                this.patients.forEach((patient: Patient, i: number): any =>
-                    this.patients[i].blood_pressure = this.utils.parseBloodPressure(patient.blood_pressure));
-
-                // test parseTemperature()
-                // Expected: null for DEMO007 (TEMP_ERROR) - Success
-                this.patients.forEach((patient: Patient, i: number): any =>
-                    this.patients[i].temperature = this.utils.parseTemperature(patient.temperature));
-
-                // test bloodPressureRisk()
-                // Expected: 0 points for DEMO025 (110; 65) - Success
-                // Expected: 1 points for DEMO018 (128; 75) - Success
-                // Expected: 2 points for DEMO029 (130; 82) - Success
-                // Expected: 2 points for DEMO021 (125; 80) - Success
-                // Expected: 3 points for DEMO028 (142; 88) - Success
-                this.patients.forEach((patient: Patient, i: number): any =>
-                    this.patients[i].blood_pressure_risk = this.utils.bloodPressureRisk(patient.blood_pressure));
-
-                // test ageRisk()
-                // Expected: invalid for DEMO043 (null) - Success
-                // Expected: 0 points for DEMO003 (34) - Success
-                // Expected: 1 points for DEMO001 (45) - Success
-                // Expected: 2 points for DEMO002 (67) - Success
-                this.patients.forEach((patient: Patient, i: number): any =>
-                    this.patients[i].age_risk = this.utils.ageRisk(patient.age));
-
-                // test temperatureRisk()
-                // Expected: invalid for DEMO007 (null) - Success
-                // Expected: 0 points for DEMO001 (98.6) - Success
-                // Expected: 1 points for DEMO009 (100.1) - Success
-                // Expected: 2 points for DEMO012 (103.2) - Success
-                this.patients.forEach((patient: Patient, i: number): any =>
-                    this.patients[i].temperature_risk = this.utils.temperatureRisk(patient.temperature));
+                this.patients.forEach((patient: Patient, i: number): any => {
+                    // parseAge()
+                    this.patients[i].age = this.utils.parseAge(patient.age);
+                    // parseBloodPressure()
+                    this.patients[i].blood_pressure = this.utils.parseBloodPressure(patient.blood_pressure);
+                    // parseTemperature()
+                    this.patients[i].temperature = this.utils.parseTemperature(patient.temperature);
+                    // bloodPressureRisk()
+                    this.patients[i].blood_pressure_risk = this.utils.bloodPressureRisk(patient.blood_pressure);
+                    // ageRisk()
+                    this.patients[i].age_risk = this.utils.ageRisk(patient.age);
+                    // temperatureRisk()
+                    this.patients[i].temperature_risk = this.utils.temperatureRisk(patient.temperature);
+                });
                 /**
                  * END - Remove after util testing
                  */
