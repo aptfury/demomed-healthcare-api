@@ -1,6 +1,7 @@
 // imports
 import "dotenv/config";
 import { Patient } from "@/app/_lib/interfaces/patients";
+import { PatientUtils } from "@/app/_lib/utils/patients";
 
 // get environment variables
 const BASE_URL: string = `${process.env.BASE_URL}`;
@@ -8,6 +9,7 @@ const API_KEY: string = `${process.env.API_KEY}`;
 
 // patient services
 export class PatientService {
+    private static utils: PatientUtils = new PatientUtils();
     private static endpoint: string = `${BASE_URL}/patients`;
     private static headers: Headers = new Headers({
         "Content-Type": "application/json",
@@ -30,6 +32,16 @@ export class PatientService {
                 const res: Response = await fetch(`${this.endpoint}?${this.query}`, { headers: this.headers });
                 const data: any = await res.json();
                 this.patients.push(...data.data);
+
+                /**
+                 * START - Remove after util testing
+                 */
+                // test parseBloodPressure()
+                this.patients.forEach((patient: Patient, i: number): any =>
+                    this.patients[i].blood_pressure = this.utils.parseBloodPressure(patient.blood_pressure));
+                /**
+                 * END - Remove after util testing
+                 */
 
                 if (this.page < data.pagination.totalPages || data.pagination.haxNext) {
                     this.hasNext = true;
