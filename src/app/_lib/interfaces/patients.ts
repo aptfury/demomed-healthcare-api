@@ -5,7 +5,8 @@ export interface Patient {
     name: string | null,
     age?: number | null,
     gender?: string | null,
-    blood_pressure?: BloodPressure | string | null, // [systolic, diastolic]
+    blood_pressure?: BloodPressure | null, // [systolic, diastolic]
+    blood_pressure_risk?: RiskScore,
     temperature?: number | null,
     visit_date?: string | null,
     diagnosis?: string | null,

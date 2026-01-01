@@ -35,9 +35,10 @@ export class PatientService {
 
                 /**
                  * START - Remove after util testing
+                 * FIXME: Missing DEMO011
                  */
                 // test parseAge()
-                // Expected: null for DEMO043 ("fifty-three")
+                // Expected: null for DEMO043 ("fifty-three") - Success
                 this.patients.forEach((patient: Patient, i: number): any =>
                     this.patients[i].age = this.utils.parseAge(patient.age));
 
@@ -46,9 +47,18 @@ export class PatientService {
                     this.patients[i].blood_pressure = this.utils.parseBloodPressure(patient.blood_pressure));
 
                 // test parseTemperature()
-                // Expected: null for DEMO007 (TEMP_ERROR)
+                // Expected: null for DEMO007 (TEMP_ERROR) - Success
                 this.patients.forEach((patient: Patient, i: number): any =>
                     this.patients[i].temperature = this.utils.parseTemperature(patient.temperature));
+
+                // test bloodPressureRisk()
+                // Expected: 0 points for DEMO025 (110; 65) - Success
+                // Expected: 1 points for DEMO018 (128; 75) - Success
+                // Expected: 2 points for DEMO029 (130; 82) - Success
+                // Expected: 2 points for DEMO021 (125; 80) - Success
+                // Expected: 3 points for DEMO028 (142; 88) - Success
+                this.patients.forEach((patient: Patient, i: number): any =>
+                    this.patients[i].blood_pressure_risk = this.utils.bloodPressureRisk(patient.blood_pressure));
                 /**
                  * END - Remove after util testing
                  */

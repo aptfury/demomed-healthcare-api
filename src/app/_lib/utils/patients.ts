@@ -36,7 +36,7 @@ export class PatientUtils {
     }
 
     // RISK ASSESSMENT
-    bloodPressureRisk(bp: BloodPressure | null): RiskScore {
+    bloodPressureRisk(bp: any): RiskScore {
         /**
          * bp[0]: systolic
          * bp[1]: diastolic
